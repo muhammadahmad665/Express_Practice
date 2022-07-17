@@ -7,6 +7,7 @@ const router = express.Router()
 // get all Members 
 router.get('/', (req, res) => res.json(members))
 
+// Specific User
 router.get('/:id', (req, res) => {
     
     const found = members.some(member => member.id === parseInt(req.params.id))
@@ -18,6 +19,7 @@ router.get('/:id', (req, res) => {
     }
 })
 
+// Post Request
 router.post('/', (req, res) => {
     const newMenber = {
         id: uuid.v4(),
@@ -34,4 +36,36 @@ router.post('/', (req, res) => {
 
 })
 
+//Updating Request
+router.put('/:id', (req, res) => {
+    
+    const found = members.some(member => member.id === parseInt(req.params.id))
+
+    if (found){
+        const updatedMember = req.body
+        members.forEach(member =>{
+            if (member.id == req.body.id){
+                member.name = updatedMember.name ? updatedMember.name : member.name
+                member.email = updatedMember.email ? updatedMember.email : member.email
+                member.status = updatedMember.status ? updatedMember.status : member.status
+            }
+            req.json({msg: "Member is Updated", member})
+        })
+    }else{
+        res.status(400).json({msg: `No Member Found With ID: ${req.params.id}`})
+    }
+})
+
+// Delete User
+
+router.get('/:id', (req, res) => {
+    
+    const found = members.some(member => member.id == req.params.id)
+
+    if (found){
+        res.json(members.filter(member => member.id != req.params.id))
+    }else{
+        res.status(400).json({msg: `No Member Found With ID: ${req.params.id}`})
+    }
+})
 module.exports = router
