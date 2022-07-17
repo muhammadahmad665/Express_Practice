@@ -49,7 +49,7 @@ router.put('/:id', (req, res) => {
                 member.email = updatedMember.email ? updatedMember.email : member.email
                 member.status = updatedMember.status ? updatedMember.status : member.status
             }
-            req.json({msg: "Member is Updated", member})
+            res.json({msg: "Member is Updated", member})
         })
     }else{
         res.status(400).json({msg: `No Member Found With ID: ${req.params.id}`})
@@ -58,7 +58,7 @@ router.put('/:id', (req, res) => {
 
 // Delete User
 
-router.get('/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     
     const found = members.some(member => member.id == req.params.id)
 
